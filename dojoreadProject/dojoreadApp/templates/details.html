@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>book detail</title>
+</head>
+<body>
+    <form action="/review/add" method="post">
+        {% csrf_token %}
+        <h1>{{ book.title }}</h1>
+        <h2>Author: {{ book.author.name }}</h2>
+        <h1>Reviews:</h1>
+        {% for review in reviews %}
+            <p>{{ review.rate }}</p>
+            <p><a href="/users/{{ review.user.id }}">{{ review.user.name }}</a> says: {{ review.review_desc }}</p>
+            <p>Posted on {{ review.created_at }}</p>
+            {% if review.user.id == user.id %}
+                <a href="/review/{{review.id}}/delete">Delete Your Review</a>
+            {% endif %}
+
+        {% endfor %}
+        <h3>Add a Review:</h3>
+        <textarea name="reviews"></textarea>
+        <h2>
+            Rating: 
+            <select name="rating">
+                {% for i in '12345'|make_list %}
+                <option value="{{i}}">{{i}}</option>
+                {% endfor %}
+            </select>
+        </h2>
+        <button type="submit">Submit Review</button>
+        <input type="hidden" name="book_id" value={{ book.id }}>
+
+
+    </form>
+        
+
+
+    
+
+
+    
+</body>
+</html>
